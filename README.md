@@ -1,2 +1,3 @@
 # Login-page
 Login / Sign up page with error messages and eye button for viewing and hiding the password
+A **Login/Sign Up page** provides users access to a platform by entering credentials like email and password. It includes input fields with validation and displays **error messages** for incorrect entries (e.g., "Invalid email format" or "Password too short"). A key feature is the **eye button**, which allows users to toggle password visibility for better usability. The UI typically includes a **"Forgot Password?"** link and a **"Sign Up"** option for new users. Security measures like **password strength indicators** and **reCAPTCHA** help prevent unauthorized access. The page is often styled with responsive design and integrates API calls for authentication.
