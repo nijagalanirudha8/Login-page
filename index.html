@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <style>
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .form-control {
+            margin-bottom: 15px;
+        }
+        .eye-icon {
+            position: absolute;
+            top: 75%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            border-color: red !important;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.875em;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mb-4 text-center">Blog Website</h2>
+        <div class="button-container">
+            <button class="btn btn-primary me-2" onclick="showForm('signin')">Login</button>
+            <button class="btn btn-secondary" onclick="showForm('signup')">Signup</button>
+        </div>
+
+        <div id="signin-form" class="mt-4" onsubmit="return validateSignInForm()">
+            <h3 class="mb-4">Sign In</h3>
+            <form>
+                <div class="mb-3">
+                    <label for="signin-email" class="form-label">Email ID</label>
+                    <input type="email" class="form-control" id="signin-email" name="email" >
+                    <div class="error-message" id="email-error"></div>
+                </div>
+                <div class="mb-3 position-relative">
+                    <label for="signin-password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="signin-password" name="password" >
+                    <span class="eye-icon" onclick="togglePasswordVisibility('signin-password')">
+                        <i class="bi bi-eye-slash-fill"></i>
+                    </span>
+                    <div class="error-message" id="password-error"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </form>
+        </div>
+
+        <div id="signup-form" class="mt-4" style="display: none;" onsubmit="return validateForm()">
+            <h3 class="mb-4">Sign Up</h3>
+            <form>
+                <div class="mb-3">
+                    <label for="signup-email" class="form-label">Email ID</label>
+                    <input type="email" class="form-control" id="signup-email" name="email" >
+                    <div class="error-message" id="email-error"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="signup-name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="signup-name" name="name" >
+                    <div class="error-message" id="name-error"></div>
+                </div>
+                <div class="mb-3" style="display: flex;">
+                    <div style="flex-grow: 0; width: 106px; position: relative;">
+                        <label for="cc-student">Dial Code <span style="color: red;">*</span></label>
+                        <select id="cc-student" name="cc-student" class="form-select cc-select" onchange="updateFlag()">
+                            <option value="" disabled selected>Code</option>
+                            <option value="+91" data-flag="https://flagcdn.com/w20/in.png"> +91</option>
+                            <option value="+1" data-flag="https://flagcdn.com/w20/us.png"> +1</option>
+                            <option value="+44" data-flag="https://flagcdn.com/w20/gb.png"> +44</option>
+                            <option value="+33" data-flag="https://flagcdn.com/w20/fr.png"> +33</option>
+                            <option value="+81" data-flag="https://flagcdn.com/w20/jp.png"> +81</option>
+                            <option value="+86" data-flag="https://flagcdn.com/w20/cn.png"> +86</option>
+                            <option value="+61" data-flag="https://flagcdn.com/w20/au.png"> +61</option>
+                            <option value="+39" data-flag="https://flagcdn.com/w20/it.png"> +39</option>
+                            <option value="+34" data-flag="https://flagcdn.com/w20/es.png"> +34</option>
+                            <option value="+55" data-flag="https://flagcdn.com/w20/br.png"> +55</option>
+                            <option value="+7" data-flag="https://flagcdn.com/w20/ru.png"> +7</option>
+                            <option value="+52" data-flag="https://flagcdn.com/w20/mx.png"> +52</option>
+                            <option value="+92" data-flag="https://flagcdn.com/w20/pk.png"> +92</option>
+                            <!-- Add more country codes as needed -->
+                        </select>
+                        <div class="error-message" id="cc-studentError"></div>
+                    </div>
+                    <div style="flex-grow: 3; position: relative; margin-left: 0px; width: 200px;">
+                        <label for="mobNum">Mobile Number <span style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="mobNum" name="mobNum" placeholder="MOBILE NUMBER" maxlength="10" style="text-transform: uppercase;">
+                        <div class="error-message" id="mobNumError"></div>
+                    </div>
+                </div>
+                <div class="mb-3 position-relative">
+                    <label for="signup-password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="signup-password" name="password" >
+                    <span class="eye-icon" onclick="togglePasswordVisibility('signup-password')">
+                        <i class="bi bi-eye-slash-fill"></i>
+                    </span>
+                    <div class="error-message" id="password-error"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        function showForm(formId) {
+            document.getElementById('signin-form').style.display = 'none';
+            document.getElementById('signup-form').style.display = 'none';
+            document.getElementById(formId + '-form').style.display = 'block';
+        }
+
+        function togglePasswordVisibility(inputId) {
+            var passwordInput = document.getElementById(inputId);
+            var eyeIcon = document.querySelector('.eye-icon i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.remove('bi-eye-slash-fill');
+                eyeIcon.classList.add('bi-eye-fill');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('bi-eye-fill');
+                eyeIcon.classList.add('bi-eye-slash-fill');
+            }
+        }
+
+        function updateFlag() {
+            var selectElement = document.getElementById('cc-student');
+            var flagImage = document.getElementById('flag-image');
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+            var flagUrl = selectedOption.getAttribute('data-flag');
+
+            if (flagUrl) {
+                flagImage.src = flagUrl;
+                flagImage.style.display = 'block';
+            } else {
+                flagImage.style.display = 'none';
+            }
+        }
+
+        const validateForm = () => {
+            const inputs = document.querySelectorAll('#signup-form .form-control');
+            inputs.forEach(input => {
+                input.classList.remove('error');
+                const errorDiv = input.nextElementSibling;
+                errorDiv.classList.remove('show');
+            });
+
+            const email = document.getElementById('email');
+            const name = document.getElementById('name');
+            const cc = document.getElementById('cc-student');
+            const mobNum = document.getElementById('mobNum');
+            const password = document.getElementById('password');
+
+            if (!email.value.includes('@')) {
+                email.classList.add('error');
+                document.getElementById('email-error').classList.add('show');
+                return false;
+            }
+
+            if (name.value.trim() === '') {
+                name.classList.add('error');
+                document.getElementById('name-error').classList.add('show');
+                return false;
+            }
+
+            if (cc-student.trim()=== ''){
+                name.classList.add('error');
+                document.getElementById('cc-studentError').classList.add('show');
+                return false;
+            }
+
+            if (mobNum.value.trim() === '') {
+                mobNum.classList.add('error');
+                document.getElementById('mobNumError').classList.add('show');
+                return false;
+            }
+
+            if (password.value.length < 6) {
+                password.classList.add('error');
+                document.getElementById('password-error').classList.add('show');
+                return false;
+            }
+
+            return true;
+        };
+
+        // Show error message when input field is focused
+        const inputs = document.querySelectorAll('#combined-form .form-control');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                const errorDiv = input.nextElementSibling;
+                errorDiv.classList.remove('show');
+            });
+        });
+
+        const validateSignInForm = () => {
+            const emailInput = document.getElementById('signin-email');
+            const passwordInput = document.getElementById('signin-password');
+            const emailError = document.getElementById('email-error');
+            const passwordError = document.getElementById('password-error');
+
+            // Clear previous errors
+            emailInput.classList.remove('error');
+            passwordInput.classList.remove('error');
+            emailError.textContent = '';
+            passwordError.textContent = '';
+
+            // Validate Email
+            if (!emailInput.value.includes('@')) {
+                emailInput.classList.add('error');
+                emailError.textContent = 'Please enter a valid email address.';
+                return false;
+            }
+
+            // Validate Password
+            if (passwordInput.value.length < 6) {
+                passwordInput.classList.add('error');
+                passwordError.textContent = 'Password must be at least 6 characters long.';
+                return false;
+            }
+
+            return true;
+        };
+    </script>
+</body>
+</html>
